@@ -11,31 +11,15 @@ export const insertUserMutation = async (user: any) => {
       photoURL: user.photoURL
     },
     mutation: gql`
-      mutation InserUser(
-        $id: String!
-        $email: String!
-        $displayName: String
-        $phoneNumber: String
-        $photoURL: String
-      ) {
-        insert_myusers(
-          objects: {
-            email: $email
-            displayName: $displayName
-            id: $id
-            phoneNumber: $phoneNumber
-            photoURL: $photoURL
-          }
-        ) {
-          returning {
-            id
-            displayName
-            email
-            phoneNumber
-            photoURL
-          }
+      mutation insert_users_one($id: String!, $email: String!, $displayName: String, $phoneNumber: String, $photoURL: String) {
+        insert_users_one(object: {email: $email, displayName: $displayName, id: $id, phoneNumber: $phoneNumber, photoURL: $photoURL}) {
+          id
+          displayName
+          email
+          phoneNumber
+          photoURL
         }
-      }
+      }    
     `
   });
 };
@@ -50,22 +34,9 @@ export const updateUserMutation = async (user: any) => {
       photoURL: user.photoURL
     },
     mutation: gql`
-      mutation UpdateUser(
-        $id: String!
-        $email: String
-        $displayName: String
-        $phoneNumber: String
-        $photoURL: String
-      ) {
-        update_myusers(
-          where: { id: { _eq: $id } }
-          _set: {
-            displayName: $displayName
-            email: $email
-            photoURL: $photoURL
-            phoneNumber: $phoneNumber
-          }
-        ) {
+      mutation update_users($id: String!, $email: String, $displayName: String, $phoneNumber: String, $photoURL: String) {
+        update_users(where: {id: {_eq: $id}}, _set: {displayName: $displayName, email: $email, photoURL: $photoURL, phoneNumber: $phoneNumber}) {
+          affected_rows
           returning {
             displayName
             email
